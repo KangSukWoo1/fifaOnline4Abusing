@@ -8,8 +8,7 @@ from slack_sdk.errors import SlackApiError
 from dotenv import load_dotenv
 import asyncio
 
-sys.path.append("/root/git/study/fifaOnlineAbusing/fifaOnlineAbusing/")
-sys.path.append('/git/study/fifaOnlineAbusing/fifaOnlineAbusing/')
+sys.path.append("/home/ubuntu/Study/fifaOnline4Abusing")
 load_dotenv(verbose=True)
 
 user_id = '@goldenbooma'
