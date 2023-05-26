@@ -2,7 +2,8 @@
 import sys
 import os
 import nickNameCrawling
-import uploadToBigquery
+import firstUploadToBigquery
+import bigqueryUpsert
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from dotenv import load_dotenv
@@ -19,7 +20,9 @@ async def main():
         response = client.chat_postMessage(channel=user_id, text=message)
 
         apiData = await nickNameCrawling.get_api_data()
-        uploadToBigquery.upload(apiData)
+        bigqueryUpsert.upload(apiData)
+        bigqueryUpsert.merge()
+#         uploadToBigquery.upload(apiData)
 
         message = 'uploadToBigquery Complete'
         response = client.chat_postMessage(channel=user_id, text=message)
