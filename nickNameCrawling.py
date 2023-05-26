@@ -33,9 +33,9 @@ async def get_nickname(session, rankerid):
         ranker_info = await response.json()
         return ranker_info
 
-async def get_market_data(session, accessId):
-    buy_url = f"https://api.nexon.co.kr/fifaonline4/v1.0/users/{accessId}/markets?tradetype=buy&offset=0&limit=100"
-    sell_url = f"https://api.nexon.co.kr/fifaonline4/v1.0/users/{accessId}/markets?tradetype=sell&offset=0&limit=100"
+async def get_market_data(session, accessId, offset):
+    buy_url = f"https://api.nexon.co.kr/fifaonline4/v1.0/users/{accessId}/markets?tradetype=buy&offset={offset}&limit=100"
+    sell_url = f"https://api.nexon.co.kr/fifaonline4/v1.0/users/{accessId}/markets?tradetype=sell&offset={offset}&limit=100"
     
     async with session.get(buy_url, headers=headers) as buy_response:
         buy_data = await buy_response.json()
@@ -62,11 +62,19 @@ async def get_api_data():
         nicknames.extend(results)
 
         access_ids = [nickname.get('accessId') for nickname in nicknames]
-        
+        access_ids = set(access_ids)
         buy_data = []
-        tasks = [get_market_data(session, access_id) for access_id in access_ids]
-        results = await asyncio.gather(*tasks)
-        buy_data.extend(results)
+        offsets = [i for i in range(0, 300, 100)]
+        for access_id in access_ids:
+            for offset in offsets:
+                task = get_market_data(session, access_id, offset)
+                result = await task
+                buy_data.append(result)
+        
+        
+#         tasks = [get_market_data(session, access_id, offset) for access_id in access_ids for offset in offsets]
+#         results = await asyncio.gather(*tasks)
+#         buy_data.extend(results)
     buy_data_decomposition = []
     for one_data in buy_data:
         try : 
