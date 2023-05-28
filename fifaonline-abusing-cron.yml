@@ -1,0 +1,81 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: fifaonline-abusing
+  namespace: fifaonline
+spec:
+  schedule: "00 08 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec: 
+      template:
+        metadata:
+          annotations: 
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+        spec: 
+          tolerations:
+          - effect: NoSchedule
+            key: analytics
+            operator: Exists
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: analytics
+                    operator: In
+                    values:
+                      - "true"        
+          restartPolicy: OnFailure
+          serviceAccount: data-user
+          volumes: 
+            - name: pvc-fifa-assets
+              persistentVolumeClaim:
+                claimName: tft-assets-goldenbooma
+            - name: ssh-key-volume
+              secret:
+                secretName: goldenbooma-ssh-key
+                defaultMode: 0400
+          initContainers:
+            - name: fifa-sync-assets
+              image: 552543234276.dkr.ecr.ap-northeast-2.amazonaws.com/analysis-sync:latest
+              imagePullPolicy: Always
+              volumeMounts: 
+                - name: pvc-fifa-assets
+                  mountPath: /root/git
+                - name: ssh-key-volume
+                  mountPath: /root/.ssh/id_rsa
+                  subPath: id_rsa
+              command:
+                - sh
+                - -c
+                - |
+                  /bin/sh <<'EOF'
+                  sh /root/init-sync-k8s.sh
+                  EOF
+              envFrom:
+              - secretRef:
+                  name: goldenbooma-secret
+          containers:
+            - name: fifaonline-abusing
+              image: 552543234276.dkr.ecr.ap-northeast-2.amazonaws.com/analysis-batch-py:1676609393
+              imagePullPolicy: IfNotPresent
+              resources:
+                requests:
+                  memory: "16Gi"
+              volumeMounts: 
+                - name: pvc-fifa-assets
+                  mountPath: /root/git/
+              command: 
+                - sh
+                - -c
+                - |
+                  /bin/sh << 'EOF'
+                  cd /root/git/KangSukWoo1/fifaOnline4Abusing
+                  python3 batch/fifaOnlineExecutor.py
+                  EOF
+              envFrom:
+              - secretRef:
+                  name: goldenbooma-secret

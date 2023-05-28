@@ -34,8 +34,8 @@ async def get_nickname(session, rankerid):
         return ranker_info
 
 async def get_market_data(session, accessId):
-    buy_url = f"https://api.nexon.co.kr/fifaonline4/v1.0/users/{accessId}/markets?tradetype=buy&offset=0&limit=100"
-    sell_url = f"https://api.nexon.co.kr/fifaonline4/v1.0/users/{accessId}/markets?tradetype=sell&offset=0&limit=100"
+    buy_url = f"https://api.nexon.co.kr/fifaonline4/v1.0/users/{accessId}/markets?tradetype=buy&offset=100&limit=100"
+    sell_url = f"https://api.nexon.co.kr/fifaonline4/v1.0/users/{accessId}/markets?tradetype=sell&offset=100&limit=100"
     
     async with session.get(buy_url, headers=headers) as buy_response:
         buy_data = await buy_response.json()

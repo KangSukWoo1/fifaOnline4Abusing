@@ -22,7 +22,6 @@ async def main():
         apiData = await nickNameCrawling.get_api_data()
         bigqueryUpsert.upload(apiData)
         bigqueryUpsert.merge()
-#         firstUploadToBigquery.upload(apiData) <- 첫 번째 업로드라면 bigqueryUpsert를 제거하고 해당 행을 실행시키면 된다!
 
         message = 'uploadToBigquery Complete'
         response = client.chat_postMessage(channel=user_id, text=message)
