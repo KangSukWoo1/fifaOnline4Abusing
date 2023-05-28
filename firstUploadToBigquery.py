@@ -5,10 +5,10 @@ from google.cloud import bigquery
 import pandas as pd
 
 def upload(df):
-    key_path = 'fifaonlineabusing-e53258229306.json'
+    key_path = 'practice-388013-9fab12440f02.json'
     client = bigquery.Client.from_service_account_json(key_path)
-    project_id = 'fifaonlineabusing'
-    dataset_id = 'transactionData'
+    project_id = 'opgg-data-analytics'
+    dataset_id = 'tft'
     table_name = 'transactionData'
 
     table_ref = f'{project_id}.{dataset_id}.{table_name}'
