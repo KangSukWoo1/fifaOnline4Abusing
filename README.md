@@ -16,3 +16,6 @@ fifaOnline4에서 일어나는 거래 중 BP 거래가 의심되는 계정에 �
 전처리 및 RandomForest활용하여 모델링 진행
 - RandomForest_validation.py <br>
 validation set에 테스트
+
+![image](https://github.com/KangSukWoo1/fifaOnline4Abusing/assets/58423399/2d52feb5-0314-40b3-8129-9e88cf24444e)
+
