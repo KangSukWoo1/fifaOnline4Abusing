@@ -1,6 +1,7 @@
 # fifaOnline4Abusing
 fifaOnline4에서 일어나는 거래 중 BP 거래가 의심되는 계정에 관한 추적 알고리즘입니다.
 
+관련 포트폴리오 Notion : https://innovative-alligator-2f6.notion.site/4-4573409b18fb451686af2035b63f6fd0?pvs=4
 
 
 데이터 적재
