@@ -14,6 +14,10 @@ fifaOnline4에서 일어나는 거래 중 BP 거래가 의심되는 계정에 �
 
 전처리 및 모델링
 - RandomForest_train.py <br>
+
+거래가 짧은 시간동안, 많은 이득을 본 매물들
+그리고 외부 요인(챔스, 신규시즌 등)의 영향이 없을 것이라 판단되는 매물들을 위주로 선별함
+
 전처리 및 RandomForest활용하여 모델링 진행
 - RandomForest_validation.py <br>
 validation set에 테스트
